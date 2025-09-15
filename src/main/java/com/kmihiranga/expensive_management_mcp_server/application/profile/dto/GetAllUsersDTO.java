@@ -1,22 +1,21 @@
-package com.kmihiranga.expensive_management_mcp_server.controller.profile.dto;
+package com.kmihiranga.expensive_management_mcp_server.application.profile.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.ai.tool.annotation.ToolParam;
+
+import java.util.Date;
 
 @Getter
 @Setter
-public class CreateUserRQ {
+public class GetAllUsersDTO {
+
+    private String id;
 
     private String email;
 
-    private String username;
-
     private String phoneNumber;
 
-    private String firstName;
-
-    private String lastName;
+    private String fullName;
 
     private String gender;
 
@@ -33,4 +32,6 @@ public class CreateUserRQ {
     private String country;
 
     private String zipCode;
+
+    private Date createdDate;
 }

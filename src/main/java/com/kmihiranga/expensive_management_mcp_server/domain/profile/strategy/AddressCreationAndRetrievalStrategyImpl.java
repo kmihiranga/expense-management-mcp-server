@@ -12,8 +12,8 @@ public class AddressCreationAndRetrievalStrategyImpl implements AddressCreationA
     private final AddressRepository addressRepository;
 
     @Override
-    public Address createAddress(Address address) {
+    public void createAddress(Address address) {
 
-        return addressRepository.save(address);
+        addressRepository.save(address);
     }
 }

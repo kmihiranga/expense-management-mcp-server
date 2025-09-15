@@ -4,5 +4,5 @@ import com.kmihiranga.expensive_management_mcp_server.domain.profile.Profile;
 
 public interface ProfileCreationAndRetrievalStrategy {
 
-    Profile createProfile(Profile profile);
+    void createProfile(Profile profile);
 }

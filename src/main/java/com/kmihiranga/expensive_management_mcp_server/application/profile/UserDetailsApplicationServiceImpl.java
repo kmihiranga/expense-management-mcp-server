@@ -1,5 +1,6 @@
 package com.kmihiranga.expensive_management_mcp_server.application.profile;
 
+import com.kmihiranga.expensive_management_mcp_server.application.profile.dto.GetAllUsersDTO;
 import com.kmihiranga.expensive_management_mcp_server.controller.profile.dto.CreateUserRQ;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.Address;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.Profile;
@@ -9,7 +10,11 @@ import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.Pr
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.UserCreationAndRetrievalStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +28,9 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
     private final ProfileCreationAndRetrievalStrategy profileCreationAndRetrievalStrategy;
 
     @Override
-    public User createUser(CreateUserRQ createUserRQ) {
+    @Tool(name = "createUser",
+            description = "Create a new user with the provided details with profile and address details.")
+    public User createUser(@ToolParam CreateUserRQ createUserRQ) {
 
         log.info("Creating user with email: {}", createUserRQ.getEmail());
 
@@ -47,6 +54,36 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
         return savedUser;
     }
 
+    @Override
+    @Tool(name = "getAllUsers", description = "Retrieve all users except deleted users.")
+    public List<GetAllUsersDTO> getAllUsers() {
+
+        log.info("Started retrieving all users list.");
+
+        // retrieve all users
+        List<User> users = userCreationAndRetrievalStrategy.getAllUsers();
+
+        return transformToGetAllUsersDTO(users);
+    }
+
+    /**
+     * Transform a list of User entities to a list of GetAllUsersDTO.
+     *
+     * @param userList The list of User entities to be transformed.
+     * @return The list of GetAllUsersDTO.
+     */
+    private List<GetAllUsersDTO> transformToGetAllUsersDTO(List<User> userList) {
+
+        return userList.parallelStream().map(user -> {
+            GetAllUsersDTO getAllUsersDTO = new GetAllUsersDTO();
+            getAllUsersDTO.setId(user.getId());
+            getAllUsersDTO.setEmail(user.getEmail());
+            getAllUsersDTO.setPhoneNumber(user.getPhoneNumber());
+            getAllUsersDTO.setCreatedDate(user.getCreatedDate());
+            return getAllUsersDTO;
+        }).toList();
+    }
+
     /** Construct user details from the request object.
      *
      * @param createUserRQ The request object containing user details.
@@ -68,10 +105,10 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
      */
     private Profile constructProfileDetails(CreateUserRQ createUserRQ, User user) {
         return Profile.builder()
-                .firstName(createUserRQ.getProfile().getFirstName())
-                .lastName(createUserRQ.getProfile().getLastName())
-                .age(createUserRQ.getProfile().getAge())
-                .gender(createUserRQ.getProfile().getGender())
+                .firstName(createUserRQ.getFirstName())
+                .lastName(createUserRQ.getLastName())
+                .age(createUserRQ.getAge())
+                .gender(createUserRQ.getGender())
                 .userId(user.getId())
                 .build();
     }
@@ -84,12 +121,12 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
      */
     private Address constructAddressDetails(CreateUserRQ createUserRQ, User user) {
         return Address.builder()
-                .addressLine1(createUserRQ.getAddress().getAddressLine1())
-                .addressLine2(createUserRQ.getAddress().getAddressLine2())
-                .city(createUserRQ.getAddress().getCity())
-                .state(createUserRQ.getAddress().getState())
-                .zipCode(createUserRQ.getAddress().getZipCode())
-                .country(createUserRQ.getAddress().getCountry())
+                .addressLine1(createUserRQ.getAddressLine1())
+                .addressLine2(createUserRQ.getAddressLine2())
+                .city(createUserRQ.getCity())
+                .state(createUserRQ.getState())
+                .zipCode(createUserRQ.getZipCode())
+                .country(createUserRQ.getCountry())
                 .userId(user.getId())
                 .build();
     }

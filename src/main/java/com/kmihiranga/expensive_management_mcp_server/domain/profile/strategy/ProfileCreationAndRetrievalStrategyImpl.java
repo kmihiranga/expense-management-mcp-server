@@ -12,8 +12,8 @@ public class ProfileCreationAndRetrievalStrategyImpl implements ProfileCreationA
     private final ProfileRepository profileRepository;
 
     @Override
-    public Profile createProfile(Profile profile) {
+    public void createProfile(Profile profile) {
 
-        return profileRepository.save(profile);
+        profileRepository.save(profile);
     }
 }
