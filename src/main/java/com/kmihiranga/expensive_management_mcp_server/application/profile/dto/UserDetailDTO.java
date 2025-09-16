@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class GetAllUsersDTO {
+public class UserDetailDTO {
 
     private String id;
 

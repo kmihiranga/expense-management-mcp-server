@@ -1,8 +1,7 @@
-package com.kmihiranga.expensive_management_mcp_server.controller.profile.dto;
+package com.kmihiranga.expensive_management_mcp_server.application.profile.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.ai.tool.annotation.ToolParam;
 
 @Getter
 @Setter

@@ -1,13 +1,14 @@
 package com.kmihiranga.expensive_management_mcp_server.application.profile;
 
-import com.kmihiranga.expensive_management_mcp_server.application.profile.dto.GetAllUsersDTO;
-import com.kmihiranga.expensive_management_mcp_server.controller.profile.dto.CreateUserRQ;
+import com.kmihiranga.expensive_management_mcp_server.application.profile.dto.UserDetailDTO;
+import com.kmihiranga.expensive_management_mcp_server.application.profile.dto.CreateUserRQ;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.Address;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.Profile;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.User;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.AddressCreationAndRetrievalStrategy;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.ProfileCreationAndRetrievalStrategy;
 import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.UserCreationAndRetrievalStrategy;
+import com.kmihiranga.expensive_management_mcp_server.domain.profile.strategy.UserProfileDetailCreationAndRetrievalStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
@@ -26,6 +27,8 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
     private final AddressCreationAndRetrievalStrategy addressCreationAndRetrievalStrategy;
 
     private final ProfileCreationAndRetrievalStrategy profileCreationAndRetrievalStrategy;
+
+    private final UserProfileDetailCreationAndRetrievalStrategy userProfileDetailCreationAndRetrievalStrategy;
 
     @Override
     @Tool(name = "createUser",
@@ -56,32 +59,12 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
 
     @Override
     @Tool(name = "getAllUsers", description = "Retrieve all users except deleted users.")
-    public List<GetAllUsersDTO> getAllUsers() {
+    public List<UserDetailDTO> getAllUsers() {
 
         log.info("Started retrieving all users list.");
 
         // retrieve all users
-        List<User> users = userCreationAndRetrievalStrategy.getAllUsers();
-
-        return transformToGetAllUsersDTO(users);
-    }
-
-    /**
-     * Transform a list of User entities to a list of GetAllUsersDTO.
-     *
-     * @param userList The list of User entities to be transformed.
-     * @return The list of GetAllUsersDTO.
-     */
-    private List<GetAllUsersDTO> transformToGetAllUsersDTO(List<User> userList) {
-
-        return userList.parallelStream().map(user -> {
-            GetAllUsersDTO getAllUsersDTO = new GetAllUsersDTO();
-            getAllUsersDTO.setId(user.getId());
-            getAllUsersDTO.setEmail(user.getEmail());
-            getAllUsersDTO.setPhoneNumber(user.getPhoneNumber());
-            getAllUsersDTO.setCreatedDate(user.getCreatedDate());
-            return getAllUsersDTO;
-        }).toList();
+        return userProfileDetailCreationAndRetrievalStrategy.retrieveUserDetails();
     }
 
     /** Construct user details from the request object.

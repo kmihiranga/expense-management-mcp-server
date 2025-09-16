@@ -55,6 +55,23 @@
              'address._class', 'address.userId']
   },
   {
+    $project: {
+      _id: 1,
+      fullName: {$concat: ["$profile.firstName", " ", "$profile.lastName"]},
+      phoneNumber: 1,
+      age: "$profile.age",
+      gender: "$profile.gender",
+      email: 1,
+      addressLine1: "$address.addressLine1",
+      addressLine2: "$address.addressLine2",
+      country: "$address.country",
+      zipCode: "$address.zipCode",
+      state: "$address.state",
+      city: "$address.city",
+      createdDate: 1
+    }
+  },
+  {
     $sort: {
       createdDate: -1
     }
