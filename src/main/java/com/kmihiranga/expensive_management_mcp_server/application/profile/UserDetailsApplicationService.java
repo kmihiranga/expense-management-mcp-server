@@ -11,4 +11,6 @@ public interface UserDetailsApplicationService {
     User createUser(CreateUserRQ createUserRQ);
 
     List<UserDetailDTO> getAllUsers();
+
+    UserDetailDTO getUserByEmail(String email);
 }

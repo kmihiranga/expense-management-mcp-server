@@ -67,6 +67,20 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
         return userProfileDetailCreationAndRetrievalStrategy.retrieveUserDetails();
     }
 
+    @Override
+    @Tool(name = "getUserByEmail", description = "Retrieve user details for the provided email.")
+    public UserDetailDTO getUserByEmail(String email) {
+
+        log.info("Started retrieving user details for email: {}", email);
+
+        UserDetailDTO userDetail = userProfileDetailCreationAndRetrievalStrategy.retrieveUserDetailByEmail(email);
+
+        log.info("Finished retrieving user details for email: {}", email);
+
+        return userDetail;
+    }
+
+
     /** Construct user details from the request object.
      *
      * @param createUserRQ The request object containing user details.

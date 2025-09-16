@@ -7,4 +7,6 @@ import java.util.List;
 public interface UserProfileDetailRepository {
 
     List<UserDetailDTO> retrieveUserDetails();
+
+    UserDetailDTO retrieveUserDetailByEmail(String email);
 }

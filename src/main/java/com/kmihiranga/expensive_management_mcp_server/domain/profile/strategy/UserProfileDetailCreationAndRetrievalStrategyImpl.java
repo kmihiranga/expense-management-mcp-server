@@ -34,4 +34,21 @@ public class UserProfileDetailCreationAndRetrievalStrategyImpl implements UserPr
 
         return userDetails;
     }
+
+    @Override
+    public UserDetailDTO retrieveUserDetailByEmail(String email) {
+
+        log.info("Started retrieving user detail for email: {}", email);
+
+        UserDetailDTO userDetail = userProfileDetailRepository.retrieveUserDetailByEmail(email);
+
+        if (userDetail == null) {
+
+            log.error("No user detail found for email: {}", email);
+
+            throw new UserNotFoundException("No user detail found for email: " + email);
+        }
+
+        return userDetail;
+    }
 }
