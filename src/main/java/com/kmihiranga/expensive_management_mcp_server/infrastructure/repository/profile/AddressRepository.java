@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AddressRepository extends MongoRepository<Address, String> {
+
+    Address findByUserIdAndDeleted(String userId, boolean deleted);
 }

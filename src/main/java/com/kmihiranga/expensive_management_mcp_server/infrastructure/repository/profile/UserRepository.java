@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByDeleted(boolean deleted);
+
+    User findByEmailAndDeleted(String email, boolean deleted);
 }
