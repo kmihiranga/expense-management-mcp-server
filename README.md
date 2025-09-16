@@ -78,3 +78,38 @@
   }
 ]
 ```
+
+* for adding configurations to the claude code you should build the final project
+
+* To build the final project you can run this gradle(here i'm using gradle for development) command
+
+```bash
+gradle build
+```
+
+* after building the final project, you should map your build jar file to the claude code configuration.
+
+* To find the configurations, you can follow the path below.
+
+```aiignore
+Open Claude Code -> Settings -> Developer -> Edit Config
+```
+
+* After opening the `claude_desktop_config.json` file you should include below configuration and you should map the build jar file.
+
+```bash
+{
+  "mcpServers": {
+    "expensive_management_mcp_server": {
+      "command": "java",
+      "args": [
+        "-jar",
+        "/path/to/jar/file/expensive-management-mcp-server-0.0.1-SNAPSHOT.jar"
+      ]
+    }
+  }
+}
+```
+* The `expensive_management_mcp_server` name should be same as the `application.properties` file `spring.ai.mcp.server.name` property value.
+
+* After adding the configurations you should restart the claude code application.
