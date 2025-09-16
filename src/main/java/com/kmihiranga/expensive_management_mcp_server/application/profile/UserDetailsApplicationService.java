@@ -13,4 +13,6 @@ public interface UserDetailsApplicationService {
     List<UserDetailDTO> getAllUsers();
 
     UserDetailDTO getUserByEmail(String email);
+
+    void deleteUserByEmail(String email);
 }

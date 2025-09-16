@@ -80,6 +80,31 @@ public class UserDetailsApplicationServiceImpl implements UserDetailsApplication
         return userDetail;
     }
 
+    @Override
+    @Tool(name = "deleteUserByEmail",
+            description = "Delete user and associated profile and address details for the provided email using user's id.")
+    public void deleteUserByEmail(String email) {
+
+        log.info("Started deleting user with email: {}", email);
+
+        User user = userCreationAndRetrievalStrategy.getUserByEmail(email);
+
+        // delete user details
+        userCreationAndRetrievalStrategy.deleteUser(user);
+
+        // delete profile details
+        Profile profile = profileCreationAndRetrievalStrategy.getProfileByUserId(user.getId());
+
+        profileCreationAndRetrievalStrategy.deleteProfile(profile);
+
+        // delete address details
+        Address address = addressCreationAndRetrievalStrategy.getAddressByUserId(user.getId());
+
+        addressCreationAndRetrievalStrategy.deleteAddress(address);
+
+        log.info("Finished deleting user with email: {}", email);
+    }
+
 
     /** Construct user details from the request object.
      *

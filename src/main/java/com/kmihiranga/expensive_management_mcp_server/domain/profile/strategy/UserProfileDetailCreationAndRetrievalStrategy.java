@@ -9,6 +9,4 @@ public interface UserProfileDetailCreationAndRetrievalStrategy {
     List<UserDetailDTO> retrieveUserDetails();
 
     UserDetailDTO retrieveUserDetailByEmail(String email);
-
-    void deleteUserDetailByEmail(String email);
 }

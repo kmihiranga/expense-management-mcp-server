@@ -44,4 +44,30 @@ public class UserCreationAndRetrievalStrategyImpl implements UserCreationAndRetr
 
         return users;
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+
+        User user = userRepository.findByEmailAndDeleted(email, false);
+
+        if (user == null) {
+
+            log.error("No user found with email: {}", email);
+
+            throw new UserNotFoundException("No user found with email: " + email);
+        }
+
+        return user;
+    }
+
+    @Override
+    public void deleteUser(User user) {
+
+        log.info("Started deleting user with email: {}", user.getEmail());
+
+        user.setDeleted(true);
+        userRepository.save(user);
+
+        log.info("Finished deleting user with email: {}", user.getEmail());
+    }
 }

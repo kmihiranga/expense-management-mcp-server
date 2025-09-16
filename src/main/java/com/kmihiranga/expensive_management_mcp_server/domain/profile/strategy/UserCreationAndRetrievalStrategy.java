@@ -9,4 +9,8 @@ public interface UserCreationAndRetrievalStrategy {
     User createUser(User user);
 
     List<User> getAllUsers();
+
+    User getUserByEmail(String email);
+
+    void deleteUser(User user);
 }

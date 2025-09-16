@@ -51,12 +51,4 @@ public class UserProfileDetailCreationAndRetrievalStrategyImpl implements UserPr
 
         return userDetail;
     }
-
-    @Override
-    public void deleteUserDetailByEmail(String email) {
-
-        log.info("Started deleting user detail for email: {}", email);
-
-
-    }
 }
